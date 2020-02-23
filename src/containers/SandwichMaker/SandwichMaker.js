@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Aux from '../../hoc/Auxiliary';
+import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Sandwich from '../../components/Sandwich/Sandwich';
 import BuildControls from '../../components/Sandwich/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -78,7 +78,7 @@ class SandwichMaker extends Component {
     }
 
     purchaseContinueHandler = () => {
-        alert('You continue!');
+        alert('Order submitted!');
     }
 
     render () {
