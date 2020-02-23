@@ -5,7 +5,7 @@ import Sandwich from '../../components/Sandwich/Sandwich';
 class SandwichMaker extends Component {
     state = {
         ingredients: {
-            salad: 1,
+            lettuce: 1,
             onion: 1,
             bacon: 1,
             cheese: 2,
