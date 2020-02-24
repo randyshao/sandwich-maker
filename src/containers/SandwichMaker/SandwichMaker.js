@@ -3,7 +3,10 @@ import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Sandwich from '../../components/Sandwich/Sandwich';
 import BuildControls from '../../components/Sandwich/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
-import OrderSummary from '../../components/Sandwich/OrderSummary/OrderSummary'
+import Spinner from '../../components/UI/Spinner/Spinner';
+import OrderSummary from '../../components/Sandwich/OrderSummary/OrderSummary';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../axios-orders';
 
 const INGREDIENT_PRICES = {
     lettuce: 0.4,
@@ -24,7 +27,8 @@ class SandwichMaker extends Component {
         },
         totalPrice: 4,
         purchasable: false,
-        purchasing: false
+        purchasing: false,
+        loading: false
     }
 
     updatePurchaseState (ingredients) {
@@ -78,7 +82,29 @@ class SandwichMaker extends Component {
     }
 
     purchaseContinueHandler = () => {
-        alert('Order submitted!');
+        // alert('Order submitted!');
+        this.setState({loading: true});
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer: {
+                name: 'Randy Shao',
+                address: {
+                    street: '1234 Street St.',
+                    postalCode: 'A1B 2C3',
+                    country: 'Canada'
+                },
+                email: 'test@gmail.com'
+            },
+            deliveryMethod: 'fastest'
+        }
+        axios.post('/orders.json', order)
+            .then(response => {
+                this.setState({loading: false, purchasing: false});
+            })
+            .catch(error => {
+                this.setState({loading: false, purchasing: false});
+            })
     }
 
     render () {
@@ -88,15 +114,20 @@ class SandwichMaker extends Component {
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0
         }
+        let orderSummary = <OrderSummary 
+            ingredients={this.state.ingredients}
+            price={this.state.totalPrice.toFixed(2)}
+            purchaseCancelled={this.purchaseCancelHandler}
+            purchaseContinued={this.purchaseContinueHandler} />
+        if (this.state.loading) {
+            orderSummary = <Spinner />;
+        }
+
         // {lettuce: true, meat: false, ...}
         return (
             <Aux>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-                    <OrderSummary 
-                        ingredients={this.state.ingredients}
-                        price={this.state.totalPrice.toFixed(2)}
-                        purchaseCancelled={this.purchaseCancelHandler}
-                        purchaseContinued={this.purchaseContinueHandler} />
+                    {orderSummary}
                 </Modal>
                 <Sandwich ingredients={this.state.ingredients}/>
                 <BuildControls
@@ -111,4 +142,4 @@ class SandwichMaker extends Component {
     }
 }
 
-export default SandwichMaker;
+export default withErrorHandler(SandwichMaker, axios);
