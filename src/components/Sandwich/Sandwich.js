@@ -1,8 +1,10 @@
 import React from 'react';
+
 import classes from './Sandwich.css';
 import Ingredient from './Ingredient/Ingredient';
 
-const sandwich = (props) => { 
+const sandwich = (props) => {
+    console.log(props); 
     let transformedIngredients = Object.keys(props.ingredients)
         .map(igKey => {
             return [...Array(props.ingredients[igKey])].map((_, i) => {

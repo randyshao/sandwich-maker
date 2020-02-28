@@ -1,5 +1,5 @@
 import React from 'react';
-import Burger from '../../Sandwich/Sandwich';
+import Sandwich from '../../Sandwich/Sandwich';
 import Button from '../../UI/Button/Button';
 import classes from './CheckoutSummary.css';
 
@@ -8,15 +8,15 @@ const checkoutSummary = (props) => {
         <div className={classes.CheckoutSummary}>
             <h1>Order is on its way!</h1>
             <div style={{width: '100%', margin: 'auto'}}>
-                <Burger ingredients={props.ingredients}/>
+                <Sandwich ingredients={props.ingredients}/>
             </div>
         
         <Button 
             btnType="Danger"
-            clicked>CANCEL</Button>
+            clicked={props.checkoutCancelled}>CANCEL</Button>
         <Button 
             btnType="Success"
-            clicked>CONTINUE</Button>
+            clicked={props.checkoutContinued}>CONTINUE</Button>
         </div>
         );
 }
