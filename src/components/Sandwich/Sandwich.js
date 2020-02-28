@@ -1,5 +1,4 @@
 import React from 'react';
-
 import classes from './Sandwich.css';
 import Ingredient from './Ingredient/Ingredient';
 
